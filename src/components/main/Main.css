@@ -3,11 +3,28 @@ main {
   margin-top: 6px;
 }
 
+main .todo-list {
+  background-color: #fff;
+  border-top: 1px solid #e6e6e6;
+}
+
+.todos { position: relative; }
+
+.todos .select-all {
+  position: absolute;
+  left: 18px;
+  top: 24px;
+  opacity: .25;
+}
+
+.todos .select-all:checked {
+  opacity: .9;
+}
+
 main .add-todo {
-  width: 40%;
+  width: 86%;
   padding: 16px 16px 16px 60px;
   border: none;
-	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
   font-size: 24px;
   line-height: 1.4em;
   outline: none;
@@ -18,4 +35,63 @@ main .add-todo::placeholder {
 	font-style: italic;
 	font-weight: 300;
 	color: #e6e6e6;
+}
+
+main .todo-footer a { color: #777; }
+
+main .todo-footer {
+  margin: 0 auto;
+  border: none;
+  background-color: #fff;
+  cursor: auto;
+  font-size: 14px;
+  outline: none;
+  z-index: 9;
+  color: #777;
+  text-align: center;
+  border-top: 1px solid #e6e6e6;
+}
+
+.todo-footer ul {
+  padding: 12px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.todo-footer li:nth-child(2) span {
+  padding: 2px 8px;
+  margin: 0 8px;
+  cursor: pointer;
+}
+
+.todo-footer li:nth-child(2) span.active {
+  border: 1px solid rgb(175, 175, 175);
+  border-radius: 4px;
+  margin: -1px 7px;
+}
+
+.todo-footer li:nth-child(2) span:hover:not(.active) {
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  margin: -1px 7px;
+}
+
+.todo-footer li:nth-child(3) span:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.todo-footer-1, .todo-footer-2 {
+  width: 44%;
+  height: 3px;
+  border: 1px solid #d3d3d3;
+  margin: 0 auto;
+  background-color: #fff;
+}
+
+.todo-footer-2 {
+  width: 43%;
 }

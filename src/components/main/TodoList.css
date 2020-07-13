@@ -1,0 +1,64 @@
+main .todos {
+  width: 45%;
+  margin: 0 auto;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+}
+
+main .edit-todo {
+  width: 86%;
+  padding: 16px;
+  border: none;
+  margin-left: 44px;
+  cursor: auto;
+  font-size: 24px;
+  line-height: 1.4em;
+  outline: none;
+  z-index: -1;
+}
+
+main .edit-todo {
+  color: #4d4d4d;
+}
+
+.editing {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), inset 0 4px 10px 0 rgba(0, 0, 0, 0.1);
+  outline: 1px solid #777 !important;
+}
+
+.read-only {
+  box-shadow: none;
+  outline: none;
+}
+
+.todo-list { position: relative; }
+
+.todo-list:hover .delete-btn {
+  display: block;
+}
+
+.todo-list .delete-btn {
+  display: none;
+  position: absolute;
+  right: 24px;
+  top: 20px;
+  color: #cc9a9a;
+  font-size: 24px;
+}
+
+.todo-list .check {
+  position: absolute;
+  left: 18px;
+  top: 24px;
+  opacity: .25;
+}
+
+.todo-list .check:checked {
+  opacity: .9;
+}
+
+.todo-list .check:checked ~ .edit-todo {
+  text-decoration: line-through;
+  color: #e6e6e6;
+}
+
+.todo-list .delete-btn:hover { color: #af5b5e; }
