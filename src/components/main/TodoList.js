@@ -2,15 +2,19 @@ import React, { Component } from 'react';
 import './TodoList.css'
 import { todoData } from './Main';
 
+export let length;
+
 class TodoList extends Component {
   constructor() {
     super();
     this.handleDoubleClick = this.handleDoubleClick.bind(this);
     this.handleOnBlur = this.handleOnBlur.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
     this.handleOnDelete = this.handleOnDelete.bind(this);
     this.handleOnToggle = this.handleOnToggle.bind(this);
     this.state = {
       readOnly: true,
+      editTodo: '',
       completed: false
     }
   }
@@ -25,6 +29,12 @@ class TodoList extends Component {
     event.preventDefault();
     event.target.className = 'edit-todo read-only';
     this.setState({ readOnly: true })
+  }
+
+  // On key change to update value
+  handleOnChange(event) {
+    this.setState({ editTodo: event.target.value });
+    console.log(event.target.value);
   }
 
   handleOnDelete(event) {
@@ -61,6 +71,7 @@ class TodoList extends Component {
           value={this.props.data}
           onDoubleClick={this.handleDoubleClick}
           onBlur={this.handleOnBlur}
+          onChange={this.handleOnChange}
         />
         <span className="fa fa-times delete-btn" aria-hidden="true" title="Delete" onClick={this.handleOnDelete}></span>
       </div>

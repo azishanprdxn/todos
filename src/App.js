@@ -7,7 +7,6 @@ import Footer from './components/footer/Footer';
 
 if (todoData.length > 0) {
   window.onload = () => {
-    console.log(localStorage.getItem('key'));
     // Active URL
     const activeURL = document.querySelectorAll('.todo-footer a span');
     for (let i = 0; i < activeURL.length; i++) {
