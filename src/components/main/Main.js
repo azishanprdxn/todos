@@ -14,12 +14,6 @@ export let todoData = [];
 class Main extends Component {
   constructor(props) {
     super(props);
-
-    // Binding functions
-    this.handleChange = this.handleChange.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.handleOnCheck = this.handleOnCheck.bind(this);
-
     // States
     this.state = {
       id: 0,
@@ -48,7 +42,7 @@ class Main extends Component {
     this.setState({ newTodo: event.target.value });
   }
 
-  handleOnCheck(event) {
+  handleOnCheck = (event) => {
     let allCheck = document.querySelectorAll('.check');
     if (event.target.checked === true) {
       for (let i = 0; i < allCheck.length; i++) {
