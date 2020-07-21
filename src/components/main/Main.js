@@ -22,6 +22,16 @@ class Main extends Component {
     }
   }
 
+  componentDidMount() {
+    if (localStorage.getItem('key')) {
+      let storage = JSON.parse(localStorage.getItem('key'));
+      for (let i = 0; i < storage.length; i++) {
+        todoData.push(storage[i]);
+      }
+    }
+    console.log(todoData);
+  }
+
   // On enter key press
   handleKeyDown = (event) => {
     if (event.keyCode !== ENTER_KEY) {
@@ -33,7 +43,6 @@ class Main extends Component {
       this.setState({ id: this.state.id + 1, newTodo: '' });
       todoData.push(this.state);
       localStorage.setItem('key', JSON.stringify(todoData));
-      console.log(this.state);
     }
   }
 
@@ -80,7 +89,6 @@ class Main extends Component {
               <div>
                 <Switch>
                   <Route exact path="/">
-                    {/* {preservedData} */}
                     {todoData.map((todo, i) =>
                       <TodoList key={i} data={todoData[i].newTodo} completed={todoData[i].completed} />
                     )}

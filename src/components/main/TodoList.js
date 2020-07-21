@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './TodoList.css'
 import { todoData } from './Main';
 
+export let length;
+
 class TodoList extends Component {
   constructor() {
     super();
@@ -30,10 +32,12 @@ class TodoList extends Component {
   }
 
   handleOnDelete = (event) => {
-    // event.preventDefault();
+    event.preventDefault();
     event.target.parentElement.remove();
-    todoData.length = todoData.length - 1;
-    console.log(event.target.parentElement);
+    length = todoData.length;
+    length = length - 1;
+    todoData.pop(this.todoData);
+    console.log(todoData, length);
   }
 
   handleOnToggle = (event) => {
