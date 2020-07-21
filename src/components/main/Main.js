@@ -29,7 +29,7 @@ class Main extends Component {
         todoData.push(storage[i]);
       }
     }
-    console.log(todoData);
+    this.setState({ id: todoData.length });
   }
 
   // On enter key press

@@ -31,19 +31,20 @@ class TodoList extends Component {
     console.log(event.target.value);
   }
 
-  handleOnDelete = (event) => {
+  handleOnDelete = (event, index) => {
     event.preventDefault();
     event.target.parentElement.remove();
+    let newTodoData = todoData.filter((element, i) => i !== index);
+    let storage = JSON.parse(localStorage.getItem('key'));
+    console.log(newTodoData, storage);
     length = todoData.length;
     length = length - 1;
     todoData.pop(this.todoData);
-    console.log(todoData, length);
   }
 
   handleOnToggle = (event) => {
-    let allCheck = document.querySelectorAll('.check');
-    let all = document.querySelectorAll('.select-all');
-    console.log(all, allCheck);
+    // let allCheck = document.querySelectorAll('.check');
+    // let all = document.querySelectorAll('.select-all');
     if (event.target.checked === true) {
       // console.log('Checked', event.target)
     } else {
