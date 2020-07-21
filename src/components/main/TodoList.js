@@ -2,63 +2,65 @@ import React, { Component } from 'react';
 import './TodoList.css'
 import { todoData } from './Main';
 
-export let length;
-
 class TodoList extends Component {
   constructor() {
     super();
-    this.handleDoubleClick = this.handleDoubleClick.bind(this);
-    this.handleOnBlur = this.handleOnBlur.bind(this);
-    this.handleOnChange = this.handleOnChange.bind(this);
-    this.handleOnDelete = this.handleOnDelete.bind(this);
-    this.handleOnToggle = this.handleOnToggle.bind(this);
+
     this.state = {
-      readOnly: true,
-      editTodo: '',
-      completed: false
+      readOnly: true
     }
   }
 
-  handleDoubleClick(event) {
+  handleDoubleClick = (event) => {
     event.preventDefault();
     event.target.className = 'edit-todo editing';
     this.setState({ readOnly: false })
   }
 
-  handleOnBlur(event) {
+  handleOnBlur = (event) => {
     event.preventDefault();
     event.target.className = 'edit-todo read-only';
     this.setState({ readOnly: true })
   }
 
   // On key change to update value
-  handleOnChange(event) {
+  handleOnChange = (event) => {
     this.setState({ editTodo: event.target.value });
     console.log(event.target.value);
   }
 
-  handleOnDelete(event) {
-    event.preventDefault();
+  handleOnDelete = (event) => {
+    // event.preventDefault();
     event.target.parentElement.remove();
     todoData.length = todoData.length - 1;
-    console.log(todoData.length);
+    console.log(event.target.parentElement);
   }
 
-  handleOnToggle(event) {
+  handleOnToggle = (event) => {
     let allCheck = document.querySelectorAll('.check');
-    for (let i = 0; i < allCheck.length; i++) {
-      if (allCheck[i].checked === true) {
-        // console.log(allCheck[i].checked);
-      }
-    }
+    let all = document.querySelectorAll('.select-all');
+    console.log(all, allCheck);
     if (event.target.checked === true) {
-      this.setState({ completed: true });
-      // this.props.completed = true;
-      console.log(this.state.completed, this.props.completed);
+      // console.log('Checked', event.target)
     } else {
-      this.setState({ completed: false });
-      // this.props.completed = this.state.completed;
-      console.log(this.state.completed, this.props.completed);
+      // console.log('UnChecked', event.target)
+    }
+  }
+
+  componentDidMount() {
+    // Active URL
+    const activeURL = document.querySelectorAll('.todo-footer a span');
+    for (let i = 0; i < activeURL.length; i++) {
+      activeURL[i].className = '';
+    }
+    if (window.location.pathname === '/') {
+      activeURL[0].className = 'active';
+    }
+    if (window.location.pathname === '/active') {
+      activeURL[1].className = 'active';
+    }
+    if (window.location.pathname === '/completed') {
+      activeURL[2].className = 'active';
     }
   }
 

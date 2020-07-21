@@ -10,20 +10,6 @@ import TodoList from './TodoList';
 
 const ENTER_KEY = 13; // Enter Key Code
 export let todoData = [];
-let id = 0;
-// let storage;
-// let preservedData;
-
-// window.onload = () => {
-//   storage = localStorage.getItem('key');
-//   storage = JSON.parse(storage);
-//   if (storage.length > 0) {
-//     preservedData = storage.map((todo, i) =>
-//       <TodoList key={i} data={storage[i].newTodo} completed={storage[i].completed} />
-//     );
-//   }
-//   console.log(storage, storage.length);
-// }
 
 class Main extends Component {
   constructor(props) {
@@ -36,40 +22,30 @@ class Main extends Component {
 
     // States
     this.state = {
-      id: id,
+      id: 0,
       newTodo: '',
       completed: false
     }
   }
 
   // On enter key press
-  handleKeyDown(event) {
+  handleKeyDown = (event) => {
     if (event.keyCode !== ENTER_KEY) {
       return;
     }
-
     event.preventDefault();
-
     let val = this.state.newTodo.trim();
-
     if (val) {
-      this.setState({ id: id++, newTodo: '' });
+      this.setState({ id: this.state.id + 1, newTodo: '' });
       todoData.push(this.state);
       localStorage.setItem('key', JSON.stringify(todoData));
+      console.log(this.state);
     }
   }
 
   // On key change to update value
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({ newTodo: event.target.value });
-  }
-
-  handleLinkClick = (event) => {
-    const activeURL = document.querySelectorAll('.todo-footer a span');
-    for (let i = 0; i < activeURL.length; i++) {
-      activeURL[i].className = '';
-    }
-    event.target.className = 'active';
   }
 
   handleOnCheck(event) {
@@ -83,6 +59,14 @@ class Main extends Component {
         allCheck[i].checked = false;
       }
     }
+  }
+
+  handleLinkClick = (event) => {
+    const activeURL = document.querySelectorAll('.todo-footer a span');
+    for (let i = 0; i < activeURL.length; i++) {
+      activeURL[i].className = '';
+    }
+    event.target.className = 'active';
   }
 
   render() {
