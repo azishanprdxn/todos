@@ -60,7 +60,7 @@ class TodoList extends Component {
   componentDidMount() {
     // Active URL
     const activeURL = document.querySelectorAll('.todo-footer a span');
-    if (window.location.pathname === '/') {
+    if (window.location.pathname === '/' || window.location.pathname === '/todos') {
       activeURL[0].className = 'active';
     }
     if (window.location.pathname === '/active') {

@@ -99,6 +99,13 @@ class Main extends Component {
                       )
                     }
                   </Route>
+                  <Route exact path="/todos">
+                    {
+                      todoData.map((todo, i) =>
+                        <TodoList key={i} data={todoData[i].newTodo} completed={todoData[i].completed} />
+                      )
+                    }
+                  </Route>
                   <Route exact path="/active">
                     {
                       todoData.map((todo, i) =>
