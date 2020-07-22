@@ -72,6 +72,10 @@ class Main extends Component {
     event.target.className = 'active';
   }
 
+  clearCompleted = () => {
+    console.log('ClearCompleted');
+  }
+
   render() {
     return (
       <main>
@@ -89,19 +93,25 @@ class Main extends Component {
               <div>
                 <Switch>
                   <Route exact path="/">
-                    {todoData.map((todo, i) =>
-                      <TodoList key={i} data={todoData[i].newTodo} completed={todoData[i].completed} />
-                    )}
+                    {
+                      todoData.map((todo, i) =>
+                        <TodoList key={i} data={todoData[i].newTodo} completed={todoData[i].completed} />
+                      )
+                    }
                   </Route>
                   <Route exact path="/active">
-                    {todoData.map((todo, i) =>
-                      todoData[i].completed === false ? <TodoList key={i} data={todoData[i].newTodo} /> : null
-                    )}
+                    {
+                      todoData.map((todo, i) =>
+                        todoData[i].completed === false ? <TodoList key={i} data={todoData[i].newTodo} /> : null
+                      )
+                    }
                   </Route>
                   <Route exact path="/completed">
-                    {todoData.map((todo, i) =>
-                      todoData[i].completed === true ? <TodoList key={i} data={todoData[i].newTodo} /> : null
-                    )}
+                    {
+                      todoData.map((todo, i) =>
+                        todoData[i].completed === false ? <TodoList key={i} data={todoData[i].newTodo} /> : null
+                      )
+                    }
                   </Route>
                 </Switch>
                 <div className="todo-footer">
@@ -119,7 +129,7 @@ class Main extends Component {
                       </Link>
                     </li>
                     <li>
-                      <span>Clear completed</span>
+                      <span onClick={this.clearCompleted}>Clear completed</span>
                     </li>
                   </ul>
                 </div>

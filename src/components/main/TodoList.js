@@ -5,24 +5,25 @@ import { todoData } from './Main';
 export let length;
 
 class TodoList extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      readOnly: true
+      readOnly: true,
+      completed: this.props.completed
     }
   }
 
   handleDoubleClick = (event) => {
     event.preventDefault();
     event.target.className = 'edit-todo editing';
-    this.setState({ readOnly: false })
+    this.setState({ readOnly: false });
   }
 
   handleOnBlur = (event) => {
     event.preventDefault();
     event.target.className = 'edit-todo read-only';
-    this.setState({ readOnly: true })
+    this.setState({ readOnly: true });
   }
 
   // On key change to update value
@@ -33,31 +34,32 @@ class TodoList extends Component {
 
   handleOnDelete = (event, index) => {
     event.preventDefault();
-    event.target.parentElement.remove();
     let newTodoData = todoData.filter((element, i) => i !== index);
+    event.target.parentElement.remove();
     let storage = JSON.parse(localStorage.getItem('key'));
-    console.log(newTodoData, storage);
-    length = todoData.length;
-    length = length - 1;
+    localStorage.setItem('key', JSON.stringify(newTodoData));
     todoData.pop(this.todoData);
+    console.log(newTodoData, storage);
+    // length = todoData.length;
+    // length = length - 1;
   }
 
   handleOnToggle = (event) => {
     // let allCheck = document.querySelectorAll('.check');
     // let all = document.querySelectorAll('.select-all');
     if (event.target.checked === true) {
-      // console.log('Checked', event.target)
+      console.log('Checked', event.target)
+      this.setState({ completed: true });;
+      console.log(event.target.nextSibling, this.props.completed);
     } else {
-      // console.log('UnChecked', event.target)
+      console.log('UnChecked', event.target);
+      this.setState({ completed: false });;
     }
   }
 
   componentDidMount() {
     // Active URL
     const activeURL = document.querySelectorAll('.todo-footer a span');
-    for (let i = 0; i < activeURL.length; i++) {
-      activeURL[i].className = '';
-    }
     if (window.location.pathname === '/') {
       activeURL[0].className = 'active';
     }
