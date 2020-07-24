@@ -1,4 +1,6 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import {
   Switch,
   Route,
@@ -8,50 +10,57 @@ import {
 import './Main.css';
 import TodoList from './TodoList';
 
+import { addTodo , allTodos } from '../../features/todo/todoSlice';
+
 const ENTER_KEY = 13; // Enter Key Code
 export let todoData = [];
 
-class Main extends Component {
-  constructor(props) {
-    super(props);
-    // States
-    this.state = {
-      id: 0,
-      newTodo: '',
-      completed: false
-    }
-  }
+const Main = () => {
+  const count = useSelector(allTodos);
+  const dispatch = useDispatch();
 
-  componentDidMount() {
+  const [state, setState] = useState({
+    id: 0,
+    newTodo: '',
+    completed: false
+  });
+
+  useEffect(() => {
     if (localStorage.getItem('key')) {
       let storage = JSON.parse(localStorage.getItem('key'));
       for (let i = 0; i < storage.length; i++) {
         todoData.push(storage[i]);
       }
     }
-    this.setState({ id: todoData.length });
+    setState({ id: todoData.length });
+  }, []);
+
+  // On key change to update value
+  const handleChange = (event) => {
+    setState({ id: state.id, newTodo: event.target.value, completed: false });
   }
 
   // On enter key press
-  handleKeyDown = (event) => {
+  const handleKeyDown = (event) => {
     if (event.keyCode !== ENTER_KEY) {
       return;
     }
     event.preventDefault();
-    let val = this.state.newTodo.trim();
+    let val = state.newTodo.trim();
     if (val) {
-      this.setState({ id: this.state.id + 1, newTodo: '' });
-      todoData.push(this.state);
+      setState({
+        id: state.id + 1,
+        newTodo: '',
+        completed: false
+      });
+      todoData.push(state);
       localStorage.setItem('key', JSON.stringify(todoData));
+      console.log(state);
+      console.log(count, dispatch(addTodo));
     }
   }
 
-  // On key change to update value
-  handleChange = (event) => {
-    this.setState({ newTodo: event.target.value });
-  }
-
-  handleOnCheck = (event) => {
+  const handleOnCheck = (event) => {
     let allCheck = document.querySelectorAll('.check');
     if (event.target.checked === true) {
       for (let i = 0; i < allCheck.length; i++) {
@@ -64,7 +73,7 @@ class Main extends Component {
     }
   }
 
-  handleLinkClick = (event) => {
+  const handleLinkClick = (event) => {
     const activeURL = document.querySelectorAll('.todo-footer a span');
     for (let i = 0; i < activeURL.length; i++) {
       activeURL[i].className = '';
@@ -72,85 +81,83 @@ class Main extends Component {
     event.target.className = 'active';
   }
 
-  clearCompleted = () => {
+  const clearCompleted = () => {
     console.log('ClearCompleted');
   }
 
-  render() {
-    return (
-      <main>
-        <div className="wrapper">
-          <div className="todos">
-            <input type="checkbox" className="select-all" onClick={this.handleOnCheck} />
-            <input autoFocus
-              className="add-todo"
-              placeholder="What needs to be done?"
-              value={this.state.newTodo}
-              onKeyDown={this.handleKeyDown}
-              onChange={this.handleChange}
-            />
-            {todoData.length > 0 ?
-              <div>
-                <Switch>
-                  <Route exact path="/">
-                    {
-                      todoData.map((todo, i) =>
-                        <TodoList key={i} data={todoData[i].newTodo} completed={todoData[i].completed} />
-                      )
-                    }
-                  </Route>
-                  <Route exact path="/todos">
-                    {
-                      todoData.map((todo, i) =>
-                        <TodoList key={i} data={todoData[i].newTodo} completed={todoData[i].completed} />
-                      )
-                    }
-                  </Route>
-                  <Route exact path="/active">
-                    {
-                      todoData.map((todo, i) =>
-                        todoData[i].completed === false ? <TodoList key={i} data={todoData[i].newTodo} /> : null
-                      )
-                    }
-                  </Route>
-                  <Route exact path="/completed">
-                    {
-                      todoData.map((todo, i) =>
-                        todoData[i].completed === false ? <TodoList key={i} data={todoData[i].newTodo} /> : null
-                      )
-                    }
-                  </Route>
-                </Switch>
-                <div className="todo-footer">
-                  <ul>
-                    <li>{todoData.length > 1 ? `${todoData.length} items` : `${todoData.length} item`} left</li>
-                    <li>
-                      <Link to="/" onClick={this.handleLinkClick}>
-                        <span>All</span>
-                      </Link>
-                      <Link to="/active" onClick={this.handleLinkClick}>
-                        <span>Active</span>
-                      </Link>
-                      <Link to="/completed" onClick={this.handleLinkClick}>
-                        <span>Completed</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <span onClick={this.clearCompleted}>Clear completed</span>
-                    </li>
-                  </ul>
-                </div>
-              </div> : null}
-          </div>
+  return (
+    <main>
+      <div className="wrapper">
+        <div className="todos">
+          <input type="checkbox" className="select-all" onClick={handleOnCheck} />
+          <input autoFocus
+            className="add-todo"
+            placeholder="What needs to be done?"
+            value={state.newTodo || ''}
+            onKeyDown={handleKeyDown}
+            onChange={handleChange}
+          />
           {todoData.length > 0 ?
             <div>
-              <div className="todo-footer-1"></div>
-              <div className="todo-footer-2"></div>
+              <Switch>
+                <Route exact path="/">
+                  {
+                    todoData.map((todo, i) =>
+                      <TodoList key={i} data={todoData[i].newTodo} completed={todoData[i].completed} />
+                    )
+                  }
+                </Route>
+                <Route exact path="/todos">
+                  {
+                    todoData.map((todo, i) =>
+                      <TodoList key={i} data={todoData[i].newTodo} completed={todoData[i].completed} />
+                    )
+                  }
+                </Route>
+                <Route exact path="/active">
+                  {
+                    todoData.map((todo, i) =>
+                      todoData[i].completed === false ? <TodoList key={i} data={todoData[i].newTodo} /> : null
+                    )
+                  }
+                </Route>
+                <Route exact path="/completed">
+                  {
+                    todoData.map((todo, i) =>
+                      todoData[i].completed === false ? <TodoList key={i} data={todoData[i].newTodo} /> : null
+                    )
+                  }
+                </Route>
+              </Switch>
+              <div className="todo-footer">
+                <ul>
+                  <li>{todoData.length > 1 ? `${todoData.length} items` : `${todoData.length} item`} left</li>
+                  <li>
+                    <Link to="/" onClick={handleLinkClick}>
+                      <span>All</span>
+                    </Link>
+                    <Link to="/active" onClick={handleLinkClick}>
+                      <span>Active</span>
+                    </Link>
+                    <Link to="/completed" onClick={handleLinkClick}>
+                      <span>Completed</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <span onClick={clearCompleted}>Clear completed</span>
+                  </li>
+                </ul>
+              </div>
             </div> : null}
         </div>
-      </main>
-    );
-  }
+        {todoData.length > 0 ?
+          <div>
+            <div className="todo-footer-1"></div>
+            <div className="todo-footer-2"></div>
+          </div> : null}
+      </div>
+    </main>
+  );
 }
 
 export default Main;
